@@ -17,11 +17,10 @@ module.exports = function () {
     message: "What song title would you like to look for? ",
     name: "track"
   }]).then(music => {
-    spotify.search({ type: 'track', query: music.track }, function (err, data) {
+    spotify.search({ type: 'track', query: music.track }, (err, data) => {
       if (err) {
         return console.log('Error occurred: ' + err);
       }
-
       displaySong(data.tracks.items[0]);
     });
   })

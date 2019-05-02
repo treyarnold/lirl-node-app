@@ -26,7 +26,7 @@ module.exports = function () {
   }]).then(movie => {
     if (movie.title.includes("")) movie.title = movie.title.replace(/ /g, "+")
     axios.get(`http://www.omdbapi.com/?t=${movie.title}&y=&plot=short&apikey=${omdb.id}`).then(
-      function (response) {
+      response => {
         displayMovie(response.data);
       }
     );
