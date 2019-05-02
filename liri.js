@@ -1,24 +1,22 @@
-require("dotenv").config();
+const movieSearch = require("./movieSearch");
+const concertSearch = require("./concertSearch");
+const musicSearch = require("./musicSearch");
+const inquirer = require("inquirer");
 
-const keys = require("./keys.js");
-const spotify = new Spotify(keys.spotify);
-const ticketMaster = new TicketMaster(keys.ticketMaster);
-const omdb = new OMDB(keys.omdb);
+const typeOfSearchQuestion = [
+  {
+    type: "list",
+    name: "typeOfSearch",
+    message: "What would you like to search for?",
+    choices: ["Concerts", "Movies", "Music"]
+  }
+]
 
-function Spotify(keysObject) {
-  this.id = keysObject.id;
-  this.secret = keysObject.secret;
-}
-
-function TicketMaster(keysObject) {
-  this.id = keysObject.id;
-  this.secret = keysObject.secret;
-}
-
-function OMDB(keysObject) {
-  this.id = keysObject.id;
-}
-
-console.log(spotify);
-console.log(ticketMaster);
-console.log(omdb);
+inquirer.prompt(typeOfSearchQuestion).then(userInput => {
+  console.log(userInput.typeOfSearch);
+  switch (userInput.typeOfSearch) {
+    case "Concerts": concertSearch(); break;
+    case "Movies": movieSearch(); break;
+    case "Music": musicSearch(); break;
+  }
+})
