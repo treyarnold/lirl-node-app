@@ -1,14 +1,28 @@
 require("dotenv").config();
 const keys = require("./keys.js");
-const axios = require("axios");
 const inquirer = require("inquirer");
+const Spotify = require("node-spotify-api");
 const spotify = new Spotify(keys.spotify);
-
-function Spotify(keysObject) {
-  this.id = keysObject.id;
-  this.secret = keysObject.secret;
+  
+function displaySong(song) {
+  console.log(`\nArtist: ${song.album.artists[0].name}`);
+  console.log(`Song Name: ${song.name}`);
+  console.log(`Review URL: ${song.preview_url}`);
+  console.log(`Album: ${song.album.name}`);
 }
 
 module.exports = function () {
-  console.log("in music Search");
+  inquirer.prompt([{
+    type: "input",
+    message: "What song title would you like to look for? ",
+    name: "track"
+  }]).then(music => {
+    spotify.search({ type: 'track', query: music.track }, function (err, data) {
+      if (err) {
+        return console.log('Error occurred: ' + err);
+      }
+
+      displaySong(data.tracks.items[0]);
+    });
+  })
 }
